@@ -15,7 +15,10 @@
 			include("db.php");
 			$link = opendb();
 			
-			$result = mysqli_query($link, "SELECT * FROM jatek");
+			if(isset($_POST['jatek'])) {$query = sprintf("SELECT * FROM jatek WHERE cim='%s' ORDER BY cim", mysqli_real_escape_string($link, $_POST['jatek']));}
+			else {$query = "SELECT * FROM jatek ORDER BY cim";}
+			
+			$result = mysqli_query($link, $query);
 		?>
 		
 		<table>
@@ -47,6 +50,7 @@
 					<td><?=$row['osszetettseg']?></td>
 					<td><a href="insert_jatek.php?id=<?=$row['id']?>&cim=<?=$row['cim']?>&szerzo=<?=$row['szerzo']?>&kiado=<?=$row['kiado']?>&jatekido=<?=$row['jatekido']?>&korhatar=<?=$row['korhatar']?>&jatekosszam=<?=$row['jatekosszam']?>&osszetettseg=<?=$row['osszetettseg']?>"> Szerkeszt </a></td>
 					<td><a href="delete_jatek.php?id=<?=$row['id']?>"> Törlés </a></td>
+					<td><a href="ertekelo.php?jatek=<?=$row['id']?>"> Értékelés </a></td>
 				</tr>
 			<?php endwhile; ?>
 		</table>

@@ -8,10 +8,13 @@
         <form action="insert_jatek.php" method="post">
 			<h1>
 			<?php
-				if(isset($_GET['id'])) {echo "Szerkesztés"; $szerk = $_GET['id'];}
-				else {echo "Új játék"; $szerk = 0;}
+				if(isset($_GET['id'])) {echo "Szerkesztés";}
+				else {echo "Új játék";}
 			?>
 			</h1>
+			<?php if(isset($_GET['id'])) { ?>
+				<input type="hidden" name="id" value="<?php echo $_GET['id'];?>" />
+            <?php } ?>
             <p>
 				Játék címe: <input type="text" name="cim" value="<?php if(isset($_GET['cim'])) {echo $_GET['cim'];}?>" />
             </p>
@@ -47,7 +50,7 @@
 		include("db.php");
 		$link = opendb();
 		
-		if($szerk != 0)
+		if(isset($_POST['id']))
 		{
 			
 			$upd= sprintf ("UPDATE jatek SET cim = '%s', szerzo = '%s', kiado = '%s', jatekido = '%s', korhatar = '%s', jatekosszam = '%s', osszetettseg = '%s'  WHERE id=",
@@ -59,7 +62,7 @@
 				mysqli_real_escape_string($link, $_POST['jatekosszam']),
 				mysqli_real_escape_string($link, $_POST['osszetettseg']));
 				
-			mysqli_query($link, $upd . mysqli_real_escape_string($link, $szerk));
+			mysqli_query($link, $upd . mysqli_real_escape_string($link, $_POST['id']));
 		}
 		
 		else

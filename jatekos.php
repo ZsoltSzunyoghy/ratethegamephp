@@ -15,7 +15,10 @@
 			include("db.php");
 			$link = opendb();
 			
-			$result = mysqli_query($link, "SELECT * FROM jatekos");
+			if(isset($_POST['jatekos'])) {$query = sprintf("SELECT * FROM jatekos WHERE nev='%s' ORDER BY nev", mysqli_real_escape_string($link, $_POST['jatekos']));}
+			else {$query = "SELECT * FROM jatekos ORDER BY nev";}
+			
+			$result = mysqli_query($link, $query);
 		?>
 		
 		<table>
@@ -26,7 +29,7 @@
 			</tr> 
 			<?php while($row = mysqli_fetch_array($result)): ?>
 				<tr>
-					<td><?=$row['nev']?></td>
+					<td><a href="user.php?id=<?=$row['id']?>"> <?=$row['nev']?> </a></td>
 					<td><?=$row['email']?></td>
 					<td><?=$row['megjegyzes']?></td>
 					<td><a href="insert_jatekos.php?id=<?=$row['id']?>&nev=<?=$row['nev']?>&email=<?=$row['email']?>&megjegyzes=<?=$row['megjegyzes']?>"> Szerkeszt </a></td>
