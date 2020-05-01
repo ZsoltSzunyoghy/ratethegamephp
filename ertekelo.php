@@ -106,7 +106,7 @@
 				echo "Nincs ilyen játékos az adatbázisban. Szeretnél létrehozni egyet?"; ?>
 				
 				<a href="insert_jatekos.php?nev=<?=$_POST['nev']?>"> Igen </a>
-				<a href="insert_jatekos.php"> Nem </a>
+				<a href="ertekelo.php?nev=<?=$_POST['nev']?>&jatek=<?=$_POST['jatek']?>&ertek=<?=$_POST['ertek']?>"> Nem </a>
 				
 				<?php
 				mysqli_close($link);

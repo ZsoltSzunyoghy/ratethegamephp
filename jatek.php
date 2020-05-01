@@ -15,16 +15,20 @@
 			include("db.php");
 			$link = opendb();
 			
-			if(isset($_POST['jatek'])) {$query = "SELECT * FROM jatek WHERE cim LIKE '%" . mysqli_real_escape_string($link, $_POST['jatek']) . "%' ORDER BY cim";}
-			else {$query = "SELECT * FROM jatek ORDER BY cim";}
+			if(isset($_GET['rendezes'])) {$rendez = $_GET['rendezes'];}
+			else {$rendez = "cim";}
+			
+			if(isset($_POST['jatek'])) {$query = "SELECT cim, szerzo, kiado, jatekido, korhatar, jatekosszam, osszetettseg, ROUND(avg(ertek), 2) AS atl FROM jatek LEFT OUTER JOIN ertekeles ON ertekeles.jatek_id = jatek.id GROUP BY cim HAVING cim LIKE '%" . mysqli_real_escape_string($link, $_POST['jatek']) . "%' ORDER BY " . $rendez;}
+			elseif(isset($_GET['jatek'])) {$query = "SELECT cim, szerzo, kiado, jatekido, korhatar, jatekosszam, osszetettseg, ROUND(avg(ertek), 2) AS atl FROM jatek LEFT OUTER JOIN ertekeles ON ertekeles.jatek_id = jatek.id GROUP BY cim HAVING cim LIKE '%" . mysqli_real_escape_string($link, $_GET['jatek']) . "%' ORDER BY " . $rendez;}
+			else {$query = "SELECT cim, szerzo, kiado, jatekido, korhatar, jatekosszam, osszetettseg, ROUND(avg(ertek), 2) AS atl FROM jatek LEFT OUTER JOIN ertekeles ON ertekeles.jatek_id = jatek.id GROUP BY cim ORDER BY " . $rendez;}
 			
 			$result = mysqli_query($link, $query);
 		?>
 		
 		<table>
 			<tr>
-				<th> Átlag </th>
-				<th> Cím </th>
+				<th> Átlag <a href="jatek.php?rendezes=atl DESC<?php if(isset($_POST['jatek'])) { ?>&jatek=<?$_POST['jatek']?><?php } elseif(isset($_GET['jatek'])) { ?>&jatek=<?$_GET['jatek']?><?php } ?>"> Rendez </a> </th>
+				<th> Cím <a href="jatek.php?rendezes=cim"> Rendez </a> </th>
 				<th> Szerző </th>
 				<th> Kiadó </th>
 				<th> Játékidő </th>
@@ -34,13 +38,13 @@
 			</tr> 
 			<?php while($row = mysqli_fetch_array($result)):
 				
-				$atlag = mysqli_query($link, "SELECT ROUND(avg(ertek), 2) AS a FROM ertekeles GROUP BY jatek_id HAVING jatek_id =" . mysqli_real_escape_string($link, $row['id']));
-				if(mysqli_num_rows($atlag) > 0) {$at = mysqli_fetch_assoc($atlag);}
-				else {$at['a'] = 0;}
+				
+				if(isset($row['atl'])) {$at = $row['atl'];}
+				else {$at = 0;}
 			?>
 				
 				<tr>
-					<td><?=$at['a']?></td>
+					<td><?=$at?></td>
 					<td><?=$row['cim']?></td>
 					<td><?=$row['szerzo']?></td>
 					<td><?=$row['kiado']?></td>

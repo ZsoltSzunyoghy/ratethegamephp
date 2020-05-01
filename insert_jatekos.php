@@ -57,7 +57,14 @@
 			mysqli_query($link, $ins);
 			
 		}
+		
+		
+		$idresult = mysqli_query($link, "SELECT id FROM jatekos WHERE nev='" . $_POST['nev'] . "'");
+		$userid = mysqli_fetch_assoc($idresult);
+		
+		echo  $userid['id'];
+		
 		mysqli_close($link);
-		header("Location: jatekos.php");
+		header("Location: user.php?id=" . $userid['id']);
 	}
 ?>
