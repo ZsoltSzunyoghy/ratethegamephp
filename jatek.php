@@ -15,7 +15,7 @@
 			include("db.php");
 			$link = opendb();
 			
-			if(isset($_POST['jatek'])) {$query = sprintf("SELECT * FROM jatek WHERE cim='%s' ORDER BY cim", mysqli_real_escape_string($link, $_POST['jatek']));}
+			if(isset($_POST['jatek'])) {$query = "SELECT * FROM jatek WHERE cim LIKE '%" . mysqli_real_escape_string($link, $_POST['jatek']) . "%' ORDER BY cim";}
 			else {$query = "SELECT * FROM jatek ORDER BY cim";}
 			
 			$result = mysqli_query($link, $query);
@@ -34,7 +34,7 @@
 			</tr> 
 			<?php while($row = mysqli_fetch_array($result)):
 				
-				$atlag = mysqli_query($link, "SELECT avg(ertek) AS a FROM ertekeles GROUP BY jatek_id HAVING jatek_id =" . mysqli_real_escape_string($link, $row['id']));
+				$atlag = mysqli_query($link, "SELECT ROUND(avg(ertek), 2) AS a FROM ertekeles GROUP BY jatek_id HAVING jatek_id =" . mysqli_real_escape_string($link, $row['id']));
 				if(mysqli_num_rows($atlag) > 0) {$at = mysqli_fetch_assoc($atlag);}
 				else {$at['a'] = 0;}
 			?>

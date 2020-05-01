@@ -15,7 +15,7 @@
 			include("db.php");
 			$link = opendb();
 			
-			if(isset($_POST['jatekos'])) {$query = sprintf("SELECT * FROM jatekos WHERE nev='%s' ORDER BY nev", mysqli_real_escape_string($link, $_POST['jatekos']));}
+			if(isset($_POST['jatekos'])) {$query = "SELECT * FROM jatekos WHERE nev LIKE '%" . mysqli_real_escape_string($link, $_POST['jatekos']) . "%' ORDER BY nev";}
 			else {$query = "SELECT * FROM jatekos ORDER BY nev";}
 			
 			$result = mysqli_query($link, $query);
