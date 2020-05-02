@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+<div id="keret">
 	<head>
 		<title> Társasjáték értékelő </title>
-		<link rel="stylesheet" type="text/css" href="style.css"> 
+		<link rel="stylesheet" type="text/css" href="theme.css"> 
 	</head>
 	<body>
 		<?php  include("menu.php"); ?>
@@ -16,25 +17,27 @@
 				$res = mysqli_query($link, $query1);
 			?>
 			
-			<h1> Értékelések ezen a napon: 
+			<h1 id="cim"> Értékelések ezen a napon: 
 			<?php 
 				if(isset($_POST['date'])) {echo $_POST['date'];}
 				else {echo date('Y-m-d');}
 			?>
 			</h1>
 			
-			<form action="datum.php" method="post">
-				
-				Másik dátum: <select id="date" name="date" >
-						<option selected value=0> Válassz </option>
+			<p>
+				<form action="datum.php" method="post">
 					
-					<?php while($sor = mysqli_fetch_array($res)): ?>
-						<option value=<?=$sor['datum']?>><?=$sor['datum']?>  </option>
-					<?php endwhile; ?>
-				</select>
-				
-				<input type="submit" value="Listázás" name="uj" />
-			</form>
+					Másik dátum: <select id="date" name="date" >
+							<option selected value=0> Válassz </option>
+						
+						<?php while($sor = mysqli_fetch_array($res)): ?>
+							<option value=<?=$sor['datum']?>><?=$sor['datum']?>  </option>
+						<?php endwhile; ?>
+					</select>
+					
+					<input id="submit" type="submit" value="Listázás" name="uj" />
+				</form>
+			</p>
 			
 			<table>
 				<tr>
@@ -61,7 +64,7 @@
 					<tr>
 						<td><?=$jateknev['cim']?></td>
 						<td><?=$jatekosnev['nev']?></td>
-						<td><?=$row['ertek']?></td>
+						<td  id="szam"><?=$row['ertek']?></td>
 					</tr>
 				<?php endwhile; ?>
 			</table>
@@ -70,4 +73,5 @@
 			
 		</div>
 	</body>
+</div>
 </html>

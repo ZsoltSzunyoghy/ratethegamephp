@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+<div id="keret">
 	<head>
 		<title> Társasjáték értékelő </title>
-		<link rel="stylesheet" type="text/css" href="style.css"> 
+		<link rel="stylesheet" type="text/css" href="theme.css"> 
 	</head>
 	<body>
 		<?php 
@@ -15,7 +16,7 @@
 		?>
 		
 		<div id="tartalom">
-		<h1><?=$adat['nev']?> </h1>
+		<h1 id="cim"><?=$adat['nev']?> </h1>
 		<h3><?=$adat['email']?> </h3>
 		
 		<h2>Értékelések: </h2>
@@ -33,15 +34,15 @@
 			?>
 				<tr>
 					<td><?=$jateknev['cim']?></td>
-					<td><?=$row['ertek']?></td>
-					<td><a href="ertekelo.php?id=<?=$row['id']?>&nev=<?=$adat['nev']?>&jatek=<?=$row['jatek_id']?>&ertek=<?=$row['ertek']?>"> Szerkeszt </a></td>
-					<td><a href="delete_ertekeles.php?id=<?=$row['id']?>"> Törlés </a></td>
+					<td  id="szam"><?=$row['ertek']?></td>
+					<td><a id="szerkeszt" href="ertekelo.php?id=<?=$row['id']?>&nev=<?=$adat['nev']?>&jatek=<?=$row['jatek_id']?>&ertek=<?=$row['ertek']?>"> Szerkeszt </a></td>
+					<td><a id="torles" href="delete_ertekeles.php?id=<?=$row['id']?>"> Törlés </a></td>
 				</tr>
 			<?php endwhile; ?>
 		</table>
 		
 		 <p>
-           <a href="ertekelo.php?nev=<?=$adat['nev']?>"> Új értékelés </a>
+           <a id="ertekeles" href="ertekelo.php?nev=<?=$adat['nev']?>"> Új értékelés </a>
         </p>
 		
 		</div>
@@ -50,4 +51,5 @@
 			mysqli_close($link);
 		?>
 	</body>
+</div>
 </html>

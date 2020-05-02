@@ -1,0 +1,148 @@
+keret {width: auto; height: auto; margin-left:auto; margin-right:auto; }
+body {background-color: gainsboro;}
+
+#menu {
+	width: 20%; 
+	height: 100%; 
+	float: left; 
+	background-color: maroon; 
+	font-family: Sans-serif;
+	position: fixed;
+	top:0;
+	left:0;
+}
+
+#tartalom {
+	width: 74%; 
+	height: 665px;
+	float: right; 
+	background-color: gainsboro; 
+	padding-left: 3%; 
+	padding-right: 3%; 
+	padding-bottom: 30px;
+	top:0;
+	right:0;
+	overflow: auto;
+}
+
+#cim {font-family: Sans-serif; font-size: xx-large;}
+
+
+table { text-align: left;}
+th { white-space: nowrap; text-decoration: bold;}
+
+
+input, select {width: 20%}
+#submit {width:100px;}
+#radio {width: 20px}
+
+#menu_cim {
+	padding-left: 5%;
+	color: peru;
+}
+
+#menu_option:link, #menu_option:visited { 
+	width: 90%;
+	display: inline-block; 
+	float: center;
+	text-align: left;
+	font-size: larger;
+	text-decoration: none; 
+	background-color: maroon;
+	color: white;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	padding-left: 10%;
+}
+#menu_option:hover, #menu_option:active {
+  background-color: FireBrick;
+}
+
+#nev:link, #nev:visited { 
+	display: table-cell; 
+	text-align: left;
+	text-decoration: none; 
+	color: black;
+}
+
+#nev:hover, #nev:active {
+	color: red;
+	text-decoration: underline;
+}
+
+#szerkeszt:link, #szerkeszt:visited { 
+	display: table-cell; 
+	text-align: center;
+	text-decoration: none; 
+	background-color: gray;
+	color: white;
+	padding: 14px 25px;
+	border-radius: 5px;
+	margin-right: 5px;
+}
+
+#szerkeszt:hover, #szerkeszt:active {
+  background-color: darkgrey;
+}
+
+#hibagomb:link, #hibagomb:visited { 
+	display: inline-block; 
+	text-align: center;
+	text-decoration: none; 
+	background-color: gray;
+	color: white;
+	padding: 4px 10px;
+}
+
+#hibagomb:hover, #hibagomb:active {
+  background-color: darkgrey;
+}
+
+#ertekeles:link, #ertekeles:visited { 
+	display: table-cell; 
+	text-align: center;
+	text-decoration: none; 
+	background-color: orange;
+	color: white;
+	padding: 14px 25px;
+	border-radius: 5px;
+}
+
+#ertekeles:hover, #ertekeles:active {
+  background-color: gold;
+}
+
+#torles:link, #torles:visited { 
+	display: table-cell; 
+	text-align: center;
+	text-decoration: none; 
+	background-color: darkred;
+	color: white;
+	padding: 14px 25px;
+	border-radius: 5px;
+}
+
+#torles:hover, #torles:active {
+  background-color: FireBrick;
+}
+
+#nagyertekelo {width: 30%; float: right; padding-top: 25px}
+#keresesek {width: auto; float: left;}
+
+#ertekelo:link, #ertekelo:visited { 
+	display: table-cell; 
+	font-size: xx-large;
+	text-align: center;
+	text-decoration: none; 
+	background-color: orange;
+	color: white;
+	padding: 50px 85px;
+	border-radius: 10px;
+}
+
+#ertekelo:hover, #ertekelo:active {
+  background-color: gold;
+}
+
+#szam {text-align: center;}
+
