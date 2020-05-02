@@ -13,6 +13,23 @@
 			<p>
 				<h1 id="cim"> Játékok  </h1>   <a id="szerkeszt" href="insert_jatek.php"> Új játék beszúrása </a> </h1>
 			</p>
+			
+			
+			<?php
+				if(isset($_GET['torles']))
+				{
+					?>
+					<p>
+						Biztosan törölni szeretnéd?
+						
+						<a id="hibagomb" href="delete_jatek.php?id=<?=$_GET['id']?>"> Igen </a>
+						<a id="hibagomb" href="jatek.php"> Nem </a>
+					</p>
+						
+					<?php
+				}
+			?>
+			
 			<?php 
 				include("db.php");
 				$link = opendb();
@@ -49,7 +66,7 @@
 						
 						<tr>
 							<td id="szam"><?=$at?></td>
-							<td><?=$row['cim']?></td>
+							<td><a id="nev" href="game.php?id=<?=$row['id']?>"> <?=$row['cim']?> </a></td>
 							<td><?=$row['szerzo']?></td>
 							<td><?=$row['kiado']?></td>
 							<td><?=$row['jatekido']?></td>
@@ -58,7 +75,7 @@
 							<td id="szam"><?=$row['osszetettseg']?></td>
 							<td><a id="szerkeszt" href="insert_jatek.php?id=<?=$row['id']?>&cim=<?=$row['cim']?>&szerzo=<?=$row['szerzo']?>&kiado=<?=$row['kiado']?>&jatekido=<?=$row['jatekido']?>&korhatar=<?=$row['korhatar']?>&jatekosszam=<?=$row['jatekosszam']?>&osszetettseg=<?=$row['osszetettseg']?>"> Szerkeszt </a></td>
 							<td><a id="ertekeles" href="ertekelo.php?jatek=<?=$row['id']?>"> Értékelés </a></td>
-							<td><a id="torles" href="delete_jatek.php?id=<?=$row['id']?>"> Törlés </a></td>
+							<td><a id="torles" href="jatek.php?torles=1&id=<?=$row['id']?>"> Törlés </a></td>
 							
 						</tr>
 					<?php endwhile; ?>

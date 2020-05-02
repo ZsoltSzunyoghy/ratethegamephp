@@ -14,6 +14,21 @@
 				<h1 id="cim"> Játékosok </h1> <a id="szerkeszt" href="insert_jatekos.php"> Új játékos beszúrása </a>
 			</p>
 			
+			<?php
+				if(isset($_GET['torles']))
+				{
+					?>
+					<p>
+						Biztosan törölni szeretnéd?
+						
+						<a id="hibagomb" href="delete_jatekos.php?id=<?=$_GET['id']?>"> Igen </a>
+						<a id="hibagomb" href="jatekos.php"> Nem </a>
+					</p>
+						
+					<?php
+				}
+			?>
+			
 			<p id="tabla">
 				
 				<?php 
@@ -40,7 +55,7 @@
 							<td><?=$row['email']?></td>
 							<td><?=$row['megjegyzes']?></td>
 							<td><a id="szerkeszt" href="insert_jatekos.php?id=<?=$row['id']?>&nev=<?=$row['nev']?>&email=<?=$row['email']?>&megjegyzes=<?=$row['megjegyzes']?>"> Szerkeszt </a></td>
-							<td><a id="torles" href="delete_jatekos.php?id=<?=$row['id']?>"> Törlés </a></td>
+							<td><a id="torles" href="jatekos.php?torles=1&id=<?=$row['id']?>"> Törlés </a></td>
 						</tr>
 					<?php endwhile; ?>
 				</table>

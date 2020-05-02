@@ -102,14 +102,14 @@ input, select {width: 20%}
 	display: table-cell; 
 	text-align: center;
 	text-decoration: none; 
-	background-color: orange;
+	background-color: GoldenRod;
 	color: white;
 	padding: 14px 25px;
 	border-radius: 5px;
 }
 
 #ertekeles:hover, #ertekeles:active {
-  background-color: gold;
+  background-color: orange;
 }
 
 #torles:link, #torles:visited { 
@@ -134,14 +134,14 @@ input, select {width: 20%}
 	font-size: xx-large;
 	text-align: center;
 	text-decoration: none; 
-	background-color: orange;
+	background-color: GoldenRod;
 	color: white;
 	padding: 50px 85px;
 	border-radius: 10px;
 }
 
 #ertekelo:hover, #ertekelo:active {
-  background-color: gold;
+  background-color: orange;
 }
 
 #szam {text-align: center;}

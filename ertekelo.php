@@ -97,6 +97,8 @@
 						mysqli_query($link, $ins);
 						
 						mysqli_close($link);
+						
+						
 						header("Location: user.php?id=" . $jatekos['id']);
 					}
 					

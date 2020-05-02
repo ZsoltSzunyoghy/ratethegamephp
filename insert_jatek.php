@@ -58,30 +58,31 @@
 				$query0 = sprintf("SELECT id FROM jatek WHERE cim='%s'", mysqli_real_escape_string($link, $_POST['cim']));
 				$ellenorzes = mysqli_query($link, $query0);
 				
-				if(mysqli_num_rows($ellenorzes) > 0)
-				{
-					mysqli_close($link);
-					echo "Ilyen nevű játék már létezik.";
-				}
 				
+				
+				if(isset($_POST['id']))
+				{
+						
+					$upd= sprintf ("UPDATE jatek SET cim = '%s', szerzo = '%s', kiado = '%s', jatekido = '%s', korhatar = '%s', jatekosszam = '%s', osszetettseg = '%s'  WHERE id=",
+						mysqli_real_escape_string($link, $_POST['cim']), 
+						mysqli_real_escape_string($link, $_POST['szerzo']), 
+						mysqli_real_escape_string($link, $_POST['kiado']), 
+						mysqli_real_escape_string($link, $_POST['jatekido']), 
+						mysqli_real_escape_string($link, $_POST['korhatar']), 
+						mysqli_real_escape_string($link, $_POST['jatekosszam']),
+						mysqli_real_escape_string($link, $_POST['osszetettseg']));
+							
+					mysqli_query($link, $upd . mysqli_real_escape_string($link, $_POST['id']));
+				}
+					
 				else
 				{
-				
-					if(isset($_POST['id']))
+					if(mysqli_num_rows($ellenorzes) > 0)
 					{
-						
-						$upd= sprintf ("UPDATE jatek SET cim = '%s', szerzo = '%s', kiado = '%s', jatekido = '%s', korhatar = '%s', jatekosszam = '%s', osszetettseg = '%s'  WHERE id=",
-							mysqli_real_escape_string($link, $_POST['cim']), 
-							mysqli_real_escape_string($link, $_POST['szerzo']), 
-							mysqli_real_escape_string($link, $_POST['kiado']), 
-							mysqli_real_escape_string($link, $_POST['jatekido']), 
-							mysqli_real_escape_string($link, $_POST['korhatar']), 
-							mysqli_real_escape_string($link, $_POST['jatekosszam']),
-							mysqli_real_escape_string($link, $_POST['osszetettseg']));
-							
-						mysqli_query($link, $upd . mysqli_real_escape_string($link, $_POST['id']));
+						mysqli_close($link);
+						echo "Ilyen nevű játék már létezik.";
 					}
-					
+						
 					else
 					{
 						
@@ -94,11 +95,12 @@
 							mysqli_real_escape_string($link, $_POST['jatekosszam']),
 							mysqli_real_escape_string($link, $_POST['osszetettseg']));
 						mysqli_query($link, $ins);
-						
 					}
-					mysqli_close($link);
-					header("Location: jatek.php");
+						
 				}
+				mysqli_close($link);
+				header("Location: jatek.php");
+				
 			}
 			?>
 		</div>

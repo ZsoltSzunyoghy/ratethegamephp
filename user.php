@@ -19,7 +19,27 @@
 		<h1 id="cim"><?=$adat['nev']?> </h1>
 		<h3><?=$adat['email']?> </h3>
 		
+		 <p>
+           <a id="ertekeles" href="ertekelo.php?nev=<?=$adat['nev']?>"> Új értékelés </a>
+        </p>
+		
 		<h2>Értékelések: </h2>
+		
+		<?php
+			if(isset($_GET['torles']))
+			{
+				?>
+				<p>
+					Biztosan törölni szeretnéd?
+					
+					<a id="hibagomb" href="delete_ertekeles.php?id=<?=$_GET['torlendo']?>&vissza=user"> Igen </a>
+					<a id="hibagomb" href="user.php?id=<?=$_GET['id']?>"> Nem </a>
+				</p>
+						
+				<?php
+			}
+		?>
+		
 		<table>
 			<tr>
 				<th> Játék </th>
@@ -36,14 +56,12 @@
 					<td><?=$jateknev['cim']?></td>
 					<td  id="szam"><?=$row['ertek']?></td>
 					<td><a id="szerkeszt" href="ertekelo.php?id=<?=$row['id']?>&nev=<?=$adat['nev']?>&jatek=<?=$row['jatek_id']?>&ertek=<?=$row['ertek']?>"> Szerkeszt </a></td>
-					<td><a id="torles" href="delete_ertekeles.php?id=<?=$row['id']?>"> Törlés </a></td>
+					<td><a id="torles" href="user.php?torles=1&torlendo=<?=$row['id']?>&id=<?=$_GET['id']?>"> Törlés </a></td>
 				</tr>
 			<?php endwhile; ?>
 		</table>
 		
-		 <p>
-           <a id="ertekeles" href="ertekelo.php?nev=<?=$adat['nev']?>"> Új értékelés </a>
-        </p>
+		
 		
 		</div>
 		

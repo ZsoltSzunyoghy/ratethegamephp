@@ -43,47 +43,42 @@
 					
 					$query0 = sprintf("SELECT id FROM jatekos WHERE nev='%s'", mysqli_real_escape_string($link, $_POST['nev']));
 					$ellenorzes = mysqli_query($link, $query0);
-							
-					if(mysqli_num_rows($ellenorzes) > 0)
+					
+					
+					if(isset($_POST['id']))
 					{
-						mysqli_close($link);
-						echo "Ilyen nevű játékos már létezik.";
+						$upd= sprintf ("UPDATE jatekos SET nev = '%s', email = '%s', megjegyzes = '%s' WHERE id=",
+							mysqli_real_escape_string($link, $_POST['nev']), 
+							mysqli_real_escape_string($link, $_POST['email']), 
+							mysqli_real_escape_string($link, $_POST['megjegyzes']));
+
+						mysqli_query($link, $upd . mysqli_real_escape_string($link, $_POST['id']));
 					}
-							
+						
 					else
 					{
-					
-					
-						if(isset($_POST['id']))
+						if(mysqli_num_rows($ellenorzes) > 0)
 						{
-							$upd= sprintf ("UPDATE jatekos SET nev = '%s', email = '%s', megjegyzes = '%s' WHERE id=",
-								mysqli_real_escape_string($link, $_POST['nev']), 
-								mysqli_real_escape_string($link, $_POST['email']), 
-								mysqli_real_escape_string($link, $_POST['megjegyzes']));
-
-							mysqli_query($link, $upd . mysqli_real_escape_string($link, $_POST['id']));
+							mysqli_close($link);
+							echo "Ilyen nevű játékos már létezik.";
 						}
-						
+									
 						else
 						{
+							
 							$ins= sprintf( "INSERT INTO jatekos (nev, email, megjegyzes) VALUES('%s', '%s', '%s')", 
 								mysqli_real_escape_string($link, $_POST['nev']), 
 								mysqli_real_escape_string($link, $_POST['email']), 
 								mysqli_real_escape_string($link, $_POST['megjegyzes']));
 
 							mysqli_query($link, $ins);
-							
 						}
-						
-						
-						$idresult = mysqli_query($link, "SELECT id FROM jatekos WHERE nev='" . $_POST['nev'] . "'");
-						$userid = mysqli_fetch_assoc($idresult);
-						
-						echo  $userid['id'];
-						
-						mysqli_close($link);
-						header("Location: user.php?id=" . $userid['id']);
 					}
+					
+					
+					mysqli_close($link);
+					header("Location: jatekos.php");
+					
 				}
 			?>
 		</div>
