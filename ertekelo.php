@@ -1,15 +1,48 @@
 <!DOCTYPE html>
-
+<html>
+	<!-- Ez az oldal tartalmazza az értékelési metódus megvalósítását. Ide van beépítve az értékelésszerkesztés is, hiszen abban az esetben is ugyanazt a formot kell kitölteni. -->
+	<head>
+		<title> Társasjáték értékelő </title>
+		<link rel="stylesheet" type="text/css" href="theme.css"> 
+	</head>
+	<body>
+		<div id="keret">
+			
+		<?php include("menu.php"); include("db.php"); ?>
+			<div id="tartalom">
+			
+				<h1 id="cim"> Értékelő </h1>
+				
+				<?php
+					// Abban az esetben, ha nem új értékelést vesz fel a felhasználó, az oldal megkapja a szerkesztendő értékelés id-ját.
+					// Ha ez történik, akkor az értékelés adatai a form alapértelmezett értékeiben eltárolódnak, és a rekord törlésre kerül. Ezután ugyanaz történik, mintha simán új értékelés történne.
+					// Side note: Ez a megoldás azért lehetséges, mert az értékelés id-je nyugodtan megváltozhat. A játék és játékos szerkesztését már bonyolultabban oldottam meg.
+					
+					if(isset($_GET['id']))
+					{
+						
+						$link = opendb();
+						
+						mysqli_query($link, "DELETE FROM ertekeles WHERE id=" . mysqli_real_escape_string($link, $_GET['id']));
+						
+						mysqli_close($link);
+					}
+				?>
+				<!-- 
+				Az értékelés adatait kéri be a rendszer az alábbi formon keresztül:
+				Szerkesztés esetén, ami a beállított GET értékek esetén történik, a kitöltési mezők alapértelmezett értékeket kaptak. Ugyan ez történik akkor is, ha az értékelés egy adott játék vagy játékos oldaláról történik.
+				-->
 
 <?php
-	include("db.php");
+	
 	
 	if(isset($_POST['uj']))
 	{
 		if($_POST['jatek'] == 0)
 		{
 			// Abban az esetben, ha az értékelés játék kiválasztása nélkül lett elküldve, a rendszer figyelmezteti erre a felhasználót
-			echo "Kérlek válassz ki egy játékot!";
+			$hiba = "Kérlek válassz ki egy játékot!";
+			//echo "Kérlek válassz ki egy játékot!";
 		}
 						
 		else
@@ -23,15 +56,7 @@
 			// Amennyiben nem, akkor a rendszer jelzi ezt a felhasználó felé, emellett megkérdezi, hogy szeretne-e létrehozni egy játékost az adott névvel.
 			if(mysqli_num_rows($result) == 0)
 			{
-				?>
-				<p>
-					Nincs ilyen játékos az adatbázisban. Szeretnél létrehozni egyet?
-									
-					<a id="hibagomb" href="insert_jatekos.php?nev=<?=$_POST['nev']?>"> Igen </a>
-					<a id="hibagomb" href="ertekelo.php?nev=<?=$_POST['nev']?>&jatek=<?=$_POST['jatek']?>&ertek=<?=$_POST['ertek']?>"> Nem </a>
-				</p>
-								
-				<?php
+				$hiba2 = 1;
 				mysqli_close($link);
 			}
 							
@@ -58,42 +83,6 @@
 						
 	}
 ?>
-
-<html>
-	<!-- Ez az oldal tartalmazza az értékelési metódus megvalósítását. Ide van beépítve az értékelésszerkesztés is, hiszen abban az esetben is ugyanazt a formot kell kitölteni. -->
-	<head>
-		<title> Társasjáték értékelő </title>
-		<link rel="stylesheet" type="text/css" href="theme.css"> 
-	</head>
-	<body>
-		<div id="keret">
-			
-			<?php include("menu.php");  ?>
-			
-			
-			<div id="tartalom">
-				<h1 id="cim"> Értékelő </h1>
-				
-				<?php
-					// Abban az esetben, ha nem új értékelést vesz fel a felhasználó, az oldal megkapja a szerkesztendő értékelés id-ját.
-					// Ha ez történik, akkor az értékelés adatai a form alapértelmezett értékeiben eltárolódnak, és a rekord törlésre kerül. Ezután ugyanaz történik, mintha simán új értékelés történne.
-					// Side note: Ez a megoldás azért lehetséges, mert az értékelés id-je nyugodtan megváltozhat. A játék és játékos szerkesztését már bonyolultabban oldottam meg.
-					
-					if(isset($_GET['id']))
-					{
-						
-						$link = opendb();
-						
-						mysqli_query($link, "DELETE FROM ertekeles WHERE id=" . mysqli_real_escape_string($link, $_GET['id']));
-						
-						mysqli_close($link);
-					}
-				?>
-				
-				<!-- 
-				Az értékelés adatait kéri be a rendszer az alábbi formon keresztül:
-				Szerkesztés esetén, ami a beállított GET értékek esetén történik, a kitöltési mezők alapértelmezett értékeket kaptak. Ugyan ez történik akkor is, ha az értékelés egy adott játék vagy játékos oldaláról történik.
-				-->
 				<form action="ertekelo.php" method="post">
 					<p>
 						Hogy hívnak? <input type="text" name="nev" value="<?php if(isset($_GET['nev'])) {echo $_GET['nev'];}?>" />
@@ -143,6 +132,21 @@
 					</p>
 				</form>
 				
+				<?php 
+				if(isset($hiba)) {echo $hiba;} 
+				
+				if(isset($hiba2)) 
+				{
+				?>
+				
+					<p>
+						Nincs ilyen játékos az adatbázisban. Szeretnél létrehozni egyet?
+										
+						<a id="hibagomb" href="insert_jatekos.php?nev=<?=$_POST['nev']?>"> Igen </a>
+						<a id="hibagomb" href="ertekelo.php?nev=<?=$_POST['nev']?>&jatek=<?=$_POST['jatek']?>&ertek=<?=$_POST['ertek']?>"> Nem </a>
+					</p>
+				
+				<?php } ?>
 				
 			</div>
 		</div>
