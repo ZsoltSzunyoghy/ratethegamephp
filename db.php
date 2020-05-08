@@ -1,4 +1,6 @@
 <?php
+// Adatbázis megnyitása
+
 function opendb(){
 	$link = mysqli_connect("localhost", "root", "") or die ("connection error" . mysqli_error());
 	mysqli_select_db($link, "nagyhazi");
