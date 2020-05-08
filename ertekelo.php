@@ -1,4 +1,64 @@
 <!DOCTYPE html>
+
+
+<?php
+	include("db.php");
+	
+	if(isset($_POST['uj']))
+	{
+		if($_POST['jatek'] == 0)
+		{
+			// Abban az esetben, ha az értékelés játék kiválasztása nélkül lett elküldve, a rendszer figyelmezteti erre a felhasználót
+			echo "Kérlek válassz ki egy játékot!";
+		}
+						
+		else
+		{
+			$link = opendb();
+							
+			// Mielőtt a rendszer elmentené az értékelést, ellenőrzi, hogy a beírt nevű játékos szerepel-e az adatbázisban.
+			$lekerdez = sprintf("SELECT id FROM jatekos WHERE nev='%s'", mysqli_real_escape_string($link, $_POST['nev']));
+			$result = mysqli_query($link, $lekerdez);
+							
+			// Amennyiben nem, akkor a rendszer jelzi ezt a felhasználó felé, emellett megkérdezi, hogy szeretne-e létrehozni egy játékost az adott névvel.
+			if(mysqli_num_rows($result) == 0)
+			{
+				?>
+				<p>
+					Nincs ilyen játékos az adatbázisban. Szeretnél létrehozni egyet?
+									
+					<a id="hibagomb" href="insert_jatekos.php?nev=<?=$_POST['nev']?>"> Igen </a>
+					<a id="hibagomb" href="ertekelo.php?nev=<?=$_POST['nev']?>&jatek=<?=$_POST['jatek']?>&ertek=<?=$_POST['ertek']?>"> Nem </a>
+				</p>
+								
+				<?php
+				mysqli_close($link);
+			}
+							
+			// Ha igen, akkor megtörténik az értékelés elmentése.
+			else
+			{
+				$jatekos = mysqli_fetch_assoc($result);
+								
+				$ins= sprintf( "INSERT INTO ertekeles (jatek_id, jatekos_id, datum, ertek) VALUES(%s, %s, curdate(), %s)", 
+					mysqli_real_escape_string($link, $_POST['jatek']), 
+					mysqli_real_escape_string($link, $jatekos['id']), 
+					mysqli_real_escape_string($link, $_POST['ertek']));
+
+
+				mysqli_query($link, $ins);
+								
+				mysqli_close($link);
+							
+							
+				header("Location: user.php?id=" . $jatekos['id']);
+			}
+						
+		}
+						
+	}
+?>
+
 <html>
 	<!-- Ez az oldal tartalmazza az értékelési metódus megvalósítását. Ide van beépítve az értékelésszerkesztés is, hiszen abban az esetben is ugyanazt a formot kell kitölteni. -->
 	<head>
@@ -8,7 +68,7 @@
 	<body>
 		<div id="keret">
 			
-			<?php include("menu.php"); include("db.php"); ?>
+			<?php include("menu.php");  ?>
 			
 			
 			<div id="tartalom">
@@ -58,8 +118,7 @@
 						<?php 
 							endwhile; 
 							mysqli_close($link);
-						?>
-						</select>
+						?></select>
 						
 						<!-- Itt szerepel egy gomb, mely egy új játék felvételének lehetőségét rejti arra az esetre, ha a felhasználó a legördülő menü tanulmányozásával jönne rá, hogy az általa értékelni kívánt játék még nem szerepel az adatbázisban. -->
 						<a id="hibagomb" href="insert_jatek.php?>"> Új játék beszúrása </a>
@@ -85,61 +144,6 @@
 				</form>
 				
 				
-				<?php
-					if(isset($_POST['uj']))
-					{
-						if($_POST['jatek'] == 0)
-						{
-							// Abban az esetben, ha az értékelés játék kiválasztása nélkül lett elküldve, a rendszer figyelmezteti erre a felhasználót
-							echo "Kérlek válassz ki egy játékot!";
-						}
-						
-						else
-						{
-							$link = opendb();
-							
-							// Mielőtt a rendszer elmentené az értékelést, ellenőrzi, hogy a beírt nevű játékos szerepel-e az adatbázisban.
-							$lekerdez = sprintf("SELECT id FROM jatekos WHERE nev='%s'", mysqli_real_escape_string($link, $_POST['nev']));
-							$result = mysqli_query($link, $lekerdez);
-							
-							// Amennyiben nem, akkor a rendszer jelzi ezt a felhasználó felé, emellett megkérdezi, hogy szeretne-e létrehozni egy játékost az adott névvel.
-							if(mysqli_num_rows($result) == 0)
-							{
-								?>
-								<p>
-									Nincs ilyen játékos az adatbázisban. Szeretnél létrehozni egyet?
-									
-									<a id="hibagomb" href="insert_jatekos.php?nev=<?=$_POST['nev']?>"> Igen </a>
-									<a id="hibagomb" href="ertekelo.php?nev=<?=$_POST['nev']?>&jatek=<?=$_POST['jatek']?>&ertek=<?=$_POST['ertek']?>"> Nem </a>
-								</p>
-								
-								<?php
-								mysqli_close($link);
-							}
-							
-							// Ha igen, akkor megtörténik az értékelés elmentése.
-							else
-							{
-								$jatekos = mysqli_fetch_assoc($result);
-								
-								$ins= sprintf( "INSERT INTO ertekeles (jatek_id, jatekos_id, datum, ertek) VALUES(%s, %s, curdate(), %s)", 
-									mysqli_real_escape_string($link, $_POST['jatek']), 
-									mysqli_real_escape_string($link, $jatekos['id']), 
-									mysqli_real_escape_string($link, $_POST['ertek']));
-
-
-								mysqli_query($link, $ins);
-								
-								mysqli_close($link);
-								
-							
-								header("Location: user.php?id=" . $jatekos['id']);
-							}
-						
-						}
-						
-					}
-				?>
 			</div>
 		</div>
 	</body>

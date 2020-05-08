@@ -52,38 +52,47 @@
 							
 					<?php
 				}
+			
+			// A játékhoz tartozó értékelések lekérdezése:
+			$ertek = mysqli_query($link, "SELECT * FROM ertekeles WHERE jatek_id=" . mysqli_real_escape_string($link, $_GET['id']) . " ORDER BY ertek DESC");
+			
+			if (mysqli_num_rows($ertek) == 0) {echo "Itt fognak megjelenni a játék értékelései.";}
+			else
+			{
 			?>
 			
-			<table>
-				<tr>
-					<th> Játékos </th>
-					<th> Értékelés </th>
-					<th> Dátum </th>
-				</tr> 
-				<?php 
-					$ertek = mysqli_query($link, "SELECT * FROM ertekeles WHERE jatek_id=" . mysqli_real_escape_string($link, $_GET['id']) . " ORDER BY ertek DESC");
-					while($row = mysqli_fetch_array($ertek)): 
-					
-					$jatekos = mysqli_query($link, "SELECT nev FROM jatekos WHERE id=" . mysqli_real_escape_string($link, $row['jatekos_id']));
-					$jatekosnev = mysqli_fetch_array($jatekos);
-				?>
+				<table>
 					<tr>
-						<td><?=$jatekosnev['nev']?></td>
-						<td  id="szam"><?=$row['ertek']?></td>
-						<td><?=$row['datum']?></td>
-						<td><a id="szerkeszt" href="ertekelo.php?id=<?=$row['id']?>&nev=<?=$jatekosnev['nev']?>&jatek=<?=$row['jatek_id']?>&ertek=<?=$row['ertek']?>"> Szerkeszt </a></td>
-						<td><a id="torles" href="game.php?torles=1&torlendo=<?=$row['id']?>&id=<?=$_GET['id']?>"> Törlés </a></td>
-					</tr>
-				<?php endwhile; ?>
-			</table>
-			
+						<th> Játékos </th>
+						<th> Értékelés </th>
+						<th> Dátum </th>
+					</tr> 
+					<?php 
+						
+						while($row = mysqli_fetch_array($ertek)): 
+						
+						// Minden sorban lekérdezzük az adott értékeléshez tartozó játékos nevét a játék id-je alapján
+						$jatekos = mysqli_query($link, "SELECT nev FROM jatekos WHERE id=" . mysqli_real_escape_string($link, $row['jatekos_id']));
+						$jatekosnev = mysqli_fetch_array($jatekos);
+					?>
+						<tr>
+							<td><?=$jatekosnev['nev']?></td>
+							<td  id="szam"><?=$row['ertek']?></td>
+							<td><?=$row['datum']?></td>
+							<td><a id="szerkeszt" href="ertekelo.php?id=<?=$row['id']?>&nev=<?=$jatekosnev['nev']?>&jatek=<?=$row['jatek_id']?>&ertek=<?=$row['ertek']?>"> Szerkeszt </a></td>
+							<td><a id="torles" href="game.php?torles=1&torlendo=<?=$row['id']?>&id=<?=$_GET['id']?>"> Törlés </a></td>
+						</tr>
+					<?php endwhile; ?>
+				</table>
+		<?php
+			}
+			mysqli_close($link);
+		?>
 			
 			
 		</div>
 		
-		<?php
-			mysqli_close($link);
-		?>
+		
 	</body>
 </div>
 </html>

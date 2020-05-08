@@ -44,9 +44,10 @@
 					<?php
 				}
 				
-				// a jétákoshoz tartozó értékelések lekérdezése
+				// A játékoshoz tartozó értékelések lekérdezése:
 				$ertek = mysqli_query($link, "SELECT * FROM ertekeles WHERE jatekos_id=" . mysqli_real_escape_string($link, $_GET['id']) . " ORDER BY ertek DESC");
 				
+				// Ha a játékos még nem adott le értékelést:
 				if(mysqli_num_rows($ertek) == 0) {echo "Itt fognak megjelenni az értékeléseid.";}
 				else
 				{
@@ -63,6 +64,7 @@
 							
 							while($row = mysqli_fetch_array($ertek)): 
 							
+							// Minden sorban lekérdezzük az adott értékeléshez tartozó játék nevét a játék id-je alapján
 							$jatek = mysqli_query($link, "SELECT cim FROM jatek WHERE id=" . mysqli_real_escape_string($link, $row['jatek_id']));
 							$jateknev = mysqli_fetch_array($jatek);
 						?>
